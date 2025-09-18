@@ -20,12 +20,14 @@ export interface Order {
   total: number;
   status: "pending" | "ready" | "picked_up";
   pickupTime: string;
+  pickupCode?: string;
 }
 
 export interface User {
   id: string;
   name: string;
   email: string;
+  joinDate: string;
   stats: {
     totalSaved: number;
     itemsRedeemed: number;
@@ -80,6 +82,7 @@ export const mockUser: User = {
   id: "1",
   name: "John Doe",
   email: "john@example.com",
+  joinDate: "2023-01-15",
   stats: {
     totalSaved: 42.5,
     itemsRedeemed: 15,

@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
+  Animated,
+  ScrollView,
   StyleSheet,
   Text,
-  View,
-  ScrollView,
   TouchableOpacity,
+  View,
 } from "react-native";
-import { Animated } from "react-native";
+
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "../constants/Colors";
 import { mockUser } from "../constants/MockData";
@@ -58,6 +59,9 @@ export default function ProfileScreen() {
         </View>
         <Text style={styles.userName}>{mockUser.name}</Text>
         <Text style={styles.userEmail}>{mockUser.email}</Text>
+        <Text style={styles.userJoinDate}>
+          Joined {new Date(mockUser.joinDate).toLocaleDateString()}
+        </Text>
       </View>
 
       <View style={styles.statsContainer}>
@@ -66,7 +70,7 @@ export default function ProfileScreen() {
         <View style={styles.statCard}>
           <Ionicons name="cash" size={40} color={Colors.success} />
           <View style={styles.statInfo}>
-            <Text style={styles.statLabel}>Total Saved</Text>
+            <Text style={styles.statLabel}>Money Saved</Text>
             <Animated.Text style={styles.statValue}>
               ${interpolatedValues.totalSaved}
             </Animated.Text>
@@ -76,7 +80,7 @@ export default function ProfileScreen() {
         <View style={styles.statCard}>
           <Ionicons name="gift" size={40} color={Colors.accent} />
           <View style={styles.statInfo}>
-            <Text style={styles.statLabel}>Items Redeemed</Text>
+            <Text style={styles.statLabel}>Meals Saved</Text>
             <Animated.Text style={styles.statValue}>
               {interpolatedValues.itemsRedeemed}
             </Animated.Text>
@@ -94,19 +98,43 @@ export default function ProfileScreen() {
         </View>
       </View>
 
-      <View style={styles.actionsContainer}>
-        <TouchableOpacity style={styles.actionButton}>
-          <Ionicons name="settings" size={24} color={Colors.secondary} />
-          <Text style={styles.actionText}>Settings</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.actionButton}>
-          <Ionicons name="help-circle" size={24} color={Colors.secondary} />
-          <Text style={styles.actionText}>Help</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.actionButton}>
-          <Ionicons name="log-out" size={24} color={Colors.secondary} />
-          <Text style={styles.actionText}>Logout</Text>
-        </TouchableOpacity>
+      <View style={styles.settingsContainer}>
+        <Text style={styles.sectionTitle}>Settings</Text>
+
+        <View style={styles.settingSection}>
+          <Text style={styles.settingTitle}>Notifications</Text>
+          <TouchableOpacity style={styles.settingOption}>
+            <Text style={styles.settingText}>Push Notifications</Text>
+            <Ionicons name="chevron-forward" size={20} color={Colors.primary} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.settingOption}>
+            <Text style={styles.settingText}>Email Alerts</Text>
+            <Ionicons name="chevron-forward" size={20} color={Colors.primary} />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.settingSection}>
+          <Text style={styles.settingTitle}>Preferences</Text>
+          <TouchableOpacity style={styles.settingOption}>
+            <Text style={styles.settingText}>Theme</Text>
+            <Ionicons name="chevron-forward" size={20} color={Colors.primary} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.settingOption}>
+            <Text style={styles.settingText}>Language</Text>
+            <Ionicons name="chevron-forward" size={20} color={Colors.primary} />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.actionsContainer}>
+          <TouchableOpacity style={styles.actionButton}>
+            <Ionicons name="help-circle" size={24} color={Colors.secondary} />
+            <Text style={styles.actionText}>Help</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.actionButton}>
+            <Ionicons name="log-out" size={24} color={Colors.secondary} />
+            <Text style={styles.actionText}>Logout</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </ScrollView>
   );
@@ -143,6 +171,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: Colors.secondary,
     opacity: 0.8,
+  },
+  userJoinDate: {
+    fontSize: 14,
+    color: Colors.secondary,
+    opacity: 0.6,
+    marginTop: 5,
   },
   statsContainer: {
     padding: 20,
@@ -181,8 +215,39 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: Colors.primary,
   },
-  actionsContainer: {
+  settingsContainer: {
     padding: 20,
+  },
+  sectionTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: Colors.primary,
+    marginBottom: 20,
+  },
+  settingSection: {
+    marginBottom: 30,
+  },
+  settingTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: Colors.primary,
+    marginBottom: 10,
+  },
+  settingOption: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: Colors.light.background,
+    padding: 15,
+    borderRadius: 8,
+    marginVertical: 5,
+  },
+  settingText: {
+    fontSize: 16,
+    color: Colors.light.text,
+  },
+  actionsContainer: {
+    marginTop: 20,
   },
   actionButton: {
     flexDirection: "row",
