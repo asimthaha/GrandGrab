@@ -1,31 +1,33 @@
-import React, { useState, useEffect, useMemo } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TextInput,
-  TouchableOpacity,
-  FlatList,
-  Dimensions,
-  Image,
-  Alert,
-} from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 import * as Location from "expo-location";
 import * as Notifications from "expo-notifications";
-import { Colors } from "../constants/Colors";
-import { Styles } from "../constants/Styles";
+import { useRouter } from "expo-router";
+import React, { useEffect, useMemo, useState } from "react";
 import {
+  Alert,
+  Dimensions,
+  FlatList,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { Colors } from "../constants/Colors";
+import {
+  Business,
   mockBusinesses,
   mockLocalHauls,
-  Business,
 } from "../constants/MockData";
+import { Styles } from "../constants/Styles";
 
 const { width } = Dimensions.get("window");
 
 export default function DiscoverScreen() {
+  const router = useRouter();
   const [viewMode, setViewMode] = useState<"list" | "map">("list");
   const [searchQuery, setSearchQuery] = useState("");
   const [businesses, setBusinesses] = useState<Business[]>(mockBusinesses);
@@ -97,7 +99,15 @@ export default function DiscoverScreen() {
   }, [businesses, viewMode]);
 
   const renderBusinessCard = ({ item }: { item: Business }) => (
-    <View style={styles.businessCard}>
+    <TouchableOpacity
+      style={styles.businessCard}
+      onPress={() =>
+        router.push({
+          pathname: "/store-detail",
+          params: { business: JSON.stringify(item) },
+        })
+      }
+    >
       <View style={styles.businessInfo}>
         <Text style={styles.businessName}>{item.name}</Text>
         <Text style={styles.businessDescription}>{item.description}</Text>
@@ -107,7 +117,7 @@ export default function DiscoverScreen() {
       <TouchableOpacity style={styles.favoriteButton}>
         <Ionicons name="heart-outline" size={24} color={Colors.primary} />
       </TouchableOpacity>
-    </View>
+    </TouchableOpacity>
   );
 
   const renderLocalHaul = ({ item }: { item: any }) => (

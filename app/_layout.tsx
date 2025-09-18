@@ -1,5 +1,6 @@
 import { SplashScreen } from "expo-router";
 import { useEffect } from "react";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import BottomTabNavigator from "./navigation/BottomTabNavigator";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -10,5 +11,9 @@ export default function RootLayout() {
     SplashScreen.hideAsync();
   }, []);
 
-  return <BottomTabNavigator />;
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <BottomTabNavigator />
+    </GestureHandlerRootView>
+  );
 }

@@ -1,3 +1,18 @@
+export interface SurpriseBag {
+  id: string;
+  name: string;
+  description: string;
+  originalPrice: number;
+  discountedPrice: number;
+  discountPercentage: number;
+  pickupWindow: {
+    start: string; // ISO date string
+    end: string; // ISO date string
+  };
+  availableQuantity: number;
+  image: string;
+}
+
 export interface Business {
   id: string;
   name: string;
@@ -10,6 +25,8 @@ export interface Business {
   distance: number; // in miles
   rating: number;
   image: string; // placeholder for image URL
+  heroImage: string; // for store detail hero
+  surpriseBags: SurpriseBag[];
 }
 
 export interface Order {
@@ -35,6 +52,37 @@ export interface User {
   };
 }
 
+export const mockSurpriseBags: SurpriseBag[] = [
+  {
+    id: "bag1",
+    name: "Bakery Surprise Bag",
+    description: "Assorted fresh breads and pastries",
+    originalPrice: 15.99,
+    discountedPrice: 7.99,
+    discountPercentage: 50,
+    pickupWindow: {
+      start: "2023-10-01T17:00:00Z",
+      end: "2023-10-01T19:00:00Z",
+    },
+    availableQuantity: 5,
+    image: "https://example.com/bakery-bag.jpg",
+  },
+  {
+    id: "bag2",
+    name: "Grocery Surprise Bag",
+    description: "Fresh produce and dairy items",
+    originalPrice: 25.99,
+    discountedPrice: 12.99,
+    discountPercentage: 50,
+    pickupWindow: {
+      start: "2023-10-01T18:00:00Z",
+      end: "2023-10-01T20:00:00Z",
+    },
+    availableQuantity: 3,
+    image: "https://example.com/grocery-bag.jpg",
+  },
+];
+
 export const mockBusinesses: Business[] = [
   {
     id: "1",
@@ -48,6 +96,8 @@ export const mockBusinesses: Business[] = [
     distance: 0.5,
     rating: 4.5,
     image: "https://example.com/bakery.jpg",
+    heroImage: "https://example.com/bakery-hero.jpg",
+    surpriseBags: [mockSurpriseBags[0]],
   },
   {
     id: "2",
@@ -61,6 +111,8 @@ export const mockBusinesses: Business[] = [
     distance: 1.2,
     rating: 4.8,
     image: "https://example.com/grocery.jpg",
+    heroImage: "https://example.com/grocery-hero.jpg",
+    surpriseBags: [mockSurpriseBags[1]],
   },
   // Add more as needed
 ];
