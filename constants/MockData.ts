@@ -87,6 +87,34 @@ export const mockSurpriseBags: SurpriseBag[] = [
     availableQuantity: 3,
     image: "https://example.com/grocery-bag.jpg",
   },
+  {
+    id: "bag3",
+    name: "Clothing Surprise Bag",
+    description: "Assorted clothing items",
+    originalPrice: 30.99,
+    discountedPrice: 15.99,
+    discountPercentage: 48,
+    pickupWindow: {
+      start: "2023-10-01T16:00:00Z",
+      end: "2023-10-01T18:00:00Z",
+    },
+    availableQuantity: 4,
+    image: "https://example.com/clothing-bag.jpg",
+  },
+  {
+    id: "bag4",
+    name: "Electronics Surprise Bag",
+    description: "Gadgets and accessories",
+    originalPrice: 50.99,
+    discountedPrice: 25.99,
+    discountPercentage: 49,
+    pickupWindow: {
+      start: "2023-10-01T17:00:00Z",
+      end: "2023-10-01T19:00:00Z",
+    },
+    availableQuantity: 2,
+    image: "https://example.com/electronics-bag.jpg",
+  },
 ];
 
 export const mockBusinesses: Business[] = [
@@ -120,7 +148,36 @@ export const mockBusinesses: Business[] = [
     heroImage: "https://example.com/grocery-hero.jpg",
     surpriseBags: [mockSurpriseBags[1]],
   },
-  // Add more as needed
+  {
+    id: "3",
+    name: "Fashion Finds",
+    description: "Clothing and apparel surplus items.",
+    location: {
+      latitude: 40.7505,
+      longitude: -73.9934,
+      address: "789 Oak St, NYC",
+    },
+    distance: 2.1,
+    rating: 4.3,
+    image: "https://example.com/clothing.jpg",
+    heroImage: "https://example.com/clothing-hero.jpg",
+    surpriseBags: [mockSurpriseBags[2]],
+  },
+  {
+    id: "4",
+    name: "Tech Treasures",
+    description: "Electronics and gadgets from local stores.",
+    location: {
+      latitude: 40.7614,
+      longitude: -73.9776,
+      address: "101 Pine St, NYC",
+    },
+    distance: 1.8,
+    rating: 4.6,
+    image: "https://example.com/electronics.jpg",
+    heroImage: "https://example.com/electronics-hero.jpg",
+    surpriseBags: [mockSurpriseBags[3]],
+  },
 ];
 
 export const mockOrders: Order[] = [
@@ -133,7 +190,24 @@ export const mockOrders: Order[] = [
     status: "ready",
     pickupTime: "2023-10-01T18:00:00Z",
   },
-  // Add more
+  {
+    id: "2",
+    businessId: "2",
+    businessName: "Fresh Harvest Grocery",
+    items: ["Bananas", "Milk"],
+    total: 8.99,
+    status: "pending",
+    pickupTime: "2023-10-02T17:00:00Z",
+  },
+  {
+    id: "3",
+    businessId: "3",
+    businessName: "Fashion Finds",
+    items: ["Shirts", "Pants"],
+    total: 12.99,
+    status: "ready",
+    pickupTime: "2023-10-02T18:00:00Z",
+  },
 ];
 
 export const mockUser: User = {
@@ -149,7 +223,10 @@ export const mockUser: User = {
 };
 
 export const mockLocalHauls = [
-  { id: "1", image: "https://example.com/photo1.jpg" },
-  { id: "2", image: "https://example.com/photo2.jpg" },
-  // Add more
+  { id: "1", image: "https://picsum.photos/200/200?random=1" },
+  { id: "2", image: "https://picsum.photos/200/200?random=2" },
+  { id: "3", image: "https://picsum.photos/200/200?random=3" },
+  { id: "4", image: "https://picsum.photos/200/200?random=4" },
+  { id: "5", image: "https://picsum.photos/200/200?random=5" },
+  { id: "6", image: "https://picsum.photos/200/200?random=6" },
 ];

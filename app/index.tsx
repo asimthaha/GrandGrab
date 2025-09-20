@@ -10,6 +10,7 @@ import {
   Dimensions,
   FlatList,
   Image,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -32,7 +33,12 @@ export default function DiscoverScreen() {
   const router = useRouter();
   const [viewMode, setViewMode] = useState<"list" | "map">("list");
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const [businesses, setBusinesses] = useState<Business[]>(mockBusinesses);
+  const [userLocation, setUserLocation] = useState<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
   const { favorites, toggleFavorite } = useAppContext();
 
   useEffect(() => {
@@ -62,6 +68,7 @@ export default function DiscoverScreen() {
       });
 
       setBusinesses(updatedBusinesses);
+      setUserLocation({ latitude, longitude });
 
       // Request notification permissions and send welcome notification
       const { status: notificationStatus } =
@@ -81,7 +88,27 @@ export default function DiscoverScreen() {
   const combinedData = useMemo(() => {
     if (viewMode !== "list") return [];
 
-    const businessItems = businesses.map((business) => ({
+    const filteredBusinesses = businesses.filter((business) => {
+      const matchesSearch =
+        searchQuery === "" ||
+        business.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        business.description.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesFilter =
+        selectedFilters.length === 0 ||
+        selectedFilters.some((filter) =>
+          business.description.toLowerCase().includes(filter.toLowerCase())
+        );
+      return matchesSearch && matchesFilter;
+    });
+
+    const sortedBusinesses = [...filteredBusinesses].sort((a, b) => {
+      if (selectedFilters.includes("nearby")) {
+        return a.distance - b.distance;
+      }
+      return 0;
+    });
+
+    const businessItems = sortedBusinesses.map((business) => ({
       type: "business",
       data: business,
     }));
@@ -94,12 +121,21 @@ export default function DiscoverScreen() {
       });
     }
 
-    return [
+    const data = [
       ...businessItems,
       { type: "sectionTitle", title: "Local Hauls" },
       ...localHaulRows,
     ];
-  }, [businesses, viewMode]);
+    console.log(
+      "Building combinedData, filtered businesses:",
+      filteredBusinesses.length,
+      "localHauls length:",
+      mockLocalHauls.length,
+      "total items:",
+      data.length
+    );
+    return data;
+  }, [businesses, viewMode, searchQuery, selectedFilters]);
 
   const BusinessCard = ({ item }: { item: Business }) => {
     const scaleAnim = React.useRef(new Animated.Value(1)).current;
@@ -156,22 +192,45 @@ export default function DiscoverScreen() {
     <BusinessCard item={item} />
   );
 
-  const renderLocalHaul = ({ item }: { item: any }) => (
-    <View style={styles.localHaulItem}>
-      <Image source={{ uri: item.image }} style={styles.localHaulImage} />
-    </View>
-  );
+  const renderLocalHaul = ({ item }: { item: any }) => {
+    console.log(
+      "Rendering renderLocalHaul for item:",
+      item.id,
+      "image URI:",
+      item.image
+    );
+    return (
+      <View style={styles.localHaulItem}>
+        <Image
+          source={{ uri: item.image }}
+          style={styles.localHaulImage}
+          onError={(e) =>
+            console.log("Image failed to load for haul:", item.id, "error:", e)
+          }
+        />
+      </View>
+    );
+  };
 
   const renderItem = ({ item }: { item: any }) => {
     if (item.type === "business") {
       return renderBusinessCard({ item: item.data });
     } else if (item.type === "sectionTitle") {
+      console.log("Rendering sectionTitle:", item.title);
       return <Text style={styles.sectionTitle}>{item.title}</Text>;
     } else if (item.type === "localHaulRow") {
+      console.log(
+        "Rendering localHaulRow with data length:",
+        item.data.length,
+        "data:",
+        item.data
+      );
       return (
         <View style={styles.localHaulRow}>
           {item.data.map((haul: any) => (
-            <View key={haul.id}>{renderLocalHaul({ item: haul })}</View>
+            <View key={haul.id} style={{ flex: 1 }}>
+              {renderLocalHaul({ item: haul })}
+            </View>
           ))}
         </View>
       );
@@ -207,17 +266,99 @@ export default function DiscoverScreen() {
             showsHorizontalScrollIndicator={false}
             style={styles.filterChips}
           >
-            <TouchableOpacity style={styles.filterChip}>
-              <Text style={styles.filterChipText}>Nearby</Text>
+            <TouchableOpacity
+              style={[
+                styles.filterChip,
+                selectedFilters.includes("nearby") && styles.selectedFilterChip,
+              ]}
+              onPress={() =>
+                setSelectedFilters((prev) =>
+                  prev.includes("nearby")
+                    ? prev.filter((f) => f !== "nearby")
+                    : [...prev, "nearby"]
+                )
+              }
+            >
+              <Text
+                style={[
+                  styles.filterChipText,
+                  selectedFilters.includes("nearby") &&
+                    styles.selectedFilterChipText,
+                ]}
+              >
+                Nearby
+              </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.filterChip}>
-              <Text style={styles.filterChipText}>Food</Text>
+            <TouchableOpacity
+              style={[
+                styles.filterChip,
+                selectedFilters.includes("food") && styles.selectedFilterChip,
+              ]}
+              onPress={() =>
+                setSelectedFilters((prev) =>
+                  prev.includes("food")
+                    ? prev.filter((f) => f !== "food")
+                    : [...prev, "food"]
+                )
+              }
+            >
+              <Text
+                style={[
+                  styles.filterChipText,
+                  selectedFilters.includes("food") &&
+                    styles.selectedFilterChipText,
+                ]}
+              >
+                Food
+              </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.filterChip}>
-              <Text style={styles.filterChipText}>Clothing</Text>
+            <TouchableOpacity
+              style={[
+                styles.filterChip,
+                selectedFilters.includes("clothing") &&
+                  styles.selectedFilterChip,
+              ]}
+              onPress={() =>
+                setSelectedFilters((prev) =>
+                  prev.includes("clothing")
+                    ? prev.filter((f) => f !== "clothing")
+                    : [...prev, "clothing"]
+                )
+              }
+            >
+              <Text
+                style={[
+                  styles.filterChipText,
+                  selectedFilters.includes("clothing") &&
+                    styles.selectedFilterChipText,
+                ]}
+              >
+                Clothing
+              </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.filterChip}>
-              <Text style={styles.filterChipText}>Electronics</Text>
+            <TouchableOpacity
+              style={[
+                styles.filterChip,
+                selectedFilters.includes("electronics") &&
+                  styles.selectedFilterChip,
+              ]}
+              onPress={() =>
+                setSelectedFilters((prev) =>
+                  prev.includes("electronics")
+                    ? prev.filter((f) => f !== "electronics")
+                    : [...prev, "electronics"]
+                )
+              }
+            >
+              <Text
+                style={[
+                  styles.filterChipText,
+                  selectedFilters.includes("electronics") &&
+                    styles.selectedFilterChipText,
+                ]}
+              >
+                Electronics
+              </Text>
             </TouchableOpacity>
           </ScrollView>
         </View>
@@ -352,6 +493,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "600",
   },
+  selectedFilterChip: {
+    backgroundColor: Colors.primary,
+  },
+  selectedFilterChipText: {
+    color: Colors.secondary,
+  },
   content: {
     flex: 1,
     paddingHorizontal: 20,
@@ -434,6 +581,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: Colors.primary,
     marginTop: 10,
+  },
+  map: {
+    flex: 1,
   },
   localHaulsSection: {
     marginTop: 20,
