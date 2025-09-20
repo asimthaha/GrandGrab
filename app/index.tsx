@@ -7,10 +7,8 @@ import React, { useEffect, useMemo, useState } from "react";
 import {
   Alert,
   Animated,
-  Dimensions,
   FlatList,
   Image,
-  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -27,18 +25,12 @@ import {
 import { Styles } from "../constants/Styles";
 import { useAppContext } from "../contexts/AppContext";
 
-const { width } = Dimensions.get("window");
-
 export default function DiscoverScreen() {
   const router = useRouter();
   const [viewMode, setViewMode] = useState<"list" | "map">("list");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const [businesses, setBusinesses] = useState<Business[]>(mockBusinesses);
-  const [userLocation, setUserLocation] = useState<{
-    latitude: number;
-    longitude: number;
-  } | null>(null);
   const { favorites, toggleFavorite } = useAppContext();
 
   useEffect(() => {
@@ -68,7 +60,6 @@ export default function DiscoverScreen() {
       });
 
       setBusinesses(updatedBusinesses);
-      setUserLocation({ latitude, longitude });
 
       // Request notification permissions and send welcome notification
       const { status: notificationStatus } =
@@ -95,8 +86,10 @@ export default function DiscoverScreen() {
         business.description.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesFilter =
         selectedFilters.length === 0 ||
-        selectedFilters.some((filter) =>
-          business.description.toLowerCase().includes(filter.toLowerCase())
+        selectedFilters.some(
+          (filter) =>
+            business.name.toLowerCase().includes(filter.toLowerCase()) ||
+            business.description.toLowerCase().includes(filter.toLowerCase())
         );
       return matchesSearch && matchesFilter;
     });
@@ -292,24 +285,48 @@ export default function DiscoverScreen() {
             <TouchableOpacity
               style={[
                 styles.filterChip,
-                selectedFilters.includes("food") && styles.selectedFilterChip,
+                selectedFilters.includes("bakery") && styles.selectedFilterChip,
               ]}
               onPress={() =>
                 setSelectedFilters((prev) =>
-                  prev.includes("food")
-                    ? prev.filter((f) => f !== "food")
-                    : [...prev, "food"]
+                  prev.includes("bakery")
+                    ? prev.filter((f) => f !== "bakery")
+                    : [...prev, "bakery"]
                 )
               }
             >
               <Text
                 style={[
                   styles.filterChipText,
-                  selectedFilters.includes("food") &&
+                  selectedFilters.includes("bakery") &&
                     styles.selectedFilterChipText,
                 ]}
               >
-                Food
+                Bakery
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.filterChip,
+                selectedFilters.includes("grocery") &&
+                  styles.selectedFilterChip,
+              ]}
+              onPress={() =>
+                setSelectedFilters((prev) =>
+                  prev.includes("grocery")
+                    ? prev.filter((f) => f !== "grocery")
+                    : [...prev, "grocery"]
+                )
+              }
+            >
+              <Text
+                style={[
+                  styles.filterChipText,
+                  selectedFilters.includes("grocery") &&
+                    styles.selectedFilterChipText,
+                ]}
+              >
+                Grocery
               </Text>
             </TouchableOpacity>
             <TouchableOpacity

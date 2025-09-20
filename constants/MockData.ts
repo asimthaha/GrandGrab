@@ -129,8 +129,10 @@ export const mockBusinesses: Business[] = [
     },
     distance: 0.5,
     rating: 4.5,
-    image: "https://example.com/bakery.jpg",
-    heroImage: "https://example.com/bakery-hero.jpg",
+    image:
+      "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=300&h=200&fit=crop&auto=format",
+    heroImage:
+      "https://images.unsplash.com/photo-1556909114-3c36e8d77b2f?w=800&h=400&fit=crop&auto=format",
     surpriseBags: [mockSurpriseBags[0]],
   },
   {
@@ -144,8 +146,10 @@ export const mockBusinesses: Business[] = [
     },
     distance: 1.2,
     rating: 4.8,
-    image: "https://example.com/grocery.jpg",
-    heroImage: "https://example.com/grocery-hero.jpg",
+    image:
+      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=300&h=200&fit=crop&auto=format",
+    heroImage:
+      "https://images.unsplash.com/photo-1556909114-3c36e8d77b2f?w=800&h=400&fit=crop&auto=format",
     surpriseBags: [mockSurpriseBags[1]],
   },
   {
@@ -159,8 +163,10 @@ export const mockBusinesses: Business[] = [
     },
     distance: 2.1,
     rating: 4.3,
-    image: "https://example.com/clothing.jpg",
-    heroImage: "https://example.com/clothing-hero.jpg",
+    image:
+      "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=300&h=200&fit=crop&auto=format",
+    heroImage:
+      "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=400&fit=crop&auto=format",
     surpriseBags: [mockSurpriseBags[2]],
   },
   {
@@ -174,8 +180,10 @@ export const mockBusinesses: Business[] = [
     },
     distance: 1.8,
     rating: 4.6,
-    image: "https://example.com/electronics.jpg",
-    heroImage: "https://example.com/electronics-hero.jpg",
+    image:
+      "https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=300&h=200&fit=crop&auto=format",
+    heroImage:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=400&fit=crop&auto=format",
     surpriseBags: [mockSurpriseBags[3]],
   },
 ];
@@ -223,10 +231,40 @@ export const mockUser: User = {
 };
 
 export const mockLocalHauls = [
-  { id: "1", image: "https://picsum.photos/200/200?random=1" },
-  { id: "2", image: "https://picsum.photos/200/200?random=2" },
-  { id: "3", image: "https://picsum.photos/200/200?random=3" },
-  { id: "4", image: "https://picsum.photos/200/200?random=4" },
-  { id: "5", image: "https://picsum.photos/200/200?random=5" },
-  { id: "6", image: "https://picsum.photos/200/200?random=6" },
+  {
+    id: "1",
+    image:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&auto=format",
+    description: "Mystery electronics bundle",
+  },
+  {
+    id: "2",
+    image:
+      "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=200&h=200&fit=crop&auto=format",
+    description: "Fashion treasures",
+  },
+  {
+    id: "3",
+    image:
+      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=200&h=200&fit=crop&auto=format",
+    description: "Fresh produce surprise",
+  },
+  {
+    id: "4",
+    image:
+      "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=200&h=200&fit=crop&auto=format",
+    description: "Bakery delights",
+  },
+  {
+    id: "5",
+    image:
+      "https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=200&h=200&fit=crop&auto=format",
+    description: "Gadget collection",
+  },
+  {
+    id: "6",
+    image:
+      "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=200&h=200&fit=crop&auto=format",
+    description: "Style surprises",
+  },
 ];

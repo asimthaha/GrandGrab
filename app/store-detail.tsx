@@ -65,7 +65,7 @@ export default function StoreDetailScreen() {
 
       // Navigate to orders screen
       router.push("/orders");
-    } catch (error) {
+    } catch {
       showToast({
         message: "Failed to reserve. Please try again.",
         type: "error",

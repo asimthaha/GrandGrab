@@ -94,7 +94,7 @@ export default function OrdersScreen() {
         });
         setModalVisible(false);
         setSelectedOrder(null);
-      } catch (error) {
+      } catch {
         showToast({
           message: "Failed to redeem. Please try again.",
           type: "error",

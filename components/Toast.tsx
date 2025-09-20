@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import {
   Animated,
   StyleSheet,
@@ -26,6 +26,16 @@ export default function Toast({
 }: ToastProps) {
   const slideAnim = useRef(new Animated.Value(100)).current; // Start below screen
 
+  const dismiss = useCallback(() => {
+    Animated.timing(slideAnim, {
+      toValue: 100,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      onDismiss?.();
+    });
+  }, [slideAnim, onDismiss]);
+
   useEffect(() => {
     if (visible) {
       // Slide in
@@ -42,17 +52,7 @@ export default function Toast({
 
       return () => clearTimeout(timer);
     }
-  }, [visible, duration]);
-
-  const dismiss = () => {
-    Animated.timing(slideAnim, {
-      toValue: 100,
-      duration: 300,
-      useNativeDriver: true,
-    }).start(() => {
-      onDismiss?.();
-    });
-  };
+  }, [visible, duration, dismiss, slideAnim]);
 
   if (!visible) return null;
 

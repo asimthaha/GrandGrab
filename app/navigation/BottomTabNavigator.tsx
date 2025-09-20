@@ -1,7 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
-import { useColorScheme } from "react-native";
 
 import { Colors } from "../../constants/Colors";
 import FavoritesScreen from "../favorites";
@@ -19,7 +18,6 @@ function TabBarIcon(props: {
 }
 
 export default function BottomTabNavigator() {
-  const colorScheme = useColorScheme();
 
   return (
     <Tab.Navigator
