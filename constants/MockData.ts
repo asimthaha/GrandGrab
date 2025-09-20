@@ -89,8 +89,8 @@ export const mockSurpriseBags: SurpriseBag[] = [
   },
   {
     id: "bag3",
-    name: "Clothing Surprise Bag",
-    description: "Assorted clothing items",
+    name: "Deli Surprise Bag",
+    description: "Assorted deli meats and cheeses",
     originalPrice: 30.99,
     discountedPrice: 15.99,
     discountPercentage: 48,
@@ -99,12 +99,12 @@ export const mockSurpriseBags: SurpriseBag[] = [
       end: "2023-10-01T18:00:00Z",
     },
     availableQuantity: 4,
-    image: "https://example.com/clothing-bag.jpg",
+    image: "https://example.com/deli-bag.jpg",
   },
   {
     id: "bag4",
-    name: "Electronics Surprise Bag",
-    description: "Gadgets and accessories",
+    name: "Beverage Surprise Bag",
+    description: "Soft drinks and juices",
     originalPrice: 50.99,
     discountedPrice: 25.99,
     discountPercentage: 49,
@@ -113,7 +113,7 @@ export const mockSurpriseBags: SurpriseBag[] = [
       end: "2023-10-01T19:00:00Z",
     },
     availableQuantity: 2,
-    image: "https://example.com/electronics-bag.jpg",
+    image: "https://example.com/beverage-bag.jpg",
   },
 ];
 
@@ -154,8 +154,8 @@ export const mockBusinesses: Business[] = [
   },
   {
     id: "3",
-    name: "Fashion Finds",
-    description: "Clothing and apparel surplus items.",
+    name: "Deli Delights",
+    description: "Fresh deli meats and cheeses nearing expiration.",
     location: {
       latitude: 40.7505,
       longitude: -73.9934,
@@ -164,15 +164,15 @@ export const mockBusinesses: Business[] = [
     distance: 2.1,
     rating: 4.3,
     image:
-      "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=300&h=200&fit=crop&auto=format",
+      "https://images.unsplash.com/photo-1544025162-d76694265947?w=300&h=200&fit=crop&auto=format",
     heroImage:
-      "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=400&fit=crop&auto=format",
+      "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800&h=400&fit=crop&auto=format",
     surpriseBags: [mockSurpriseBags[2]],
   },
   {
     id: "4",
-    name: "Tech Treasures",
-    description: "Electronics and gadgets from local stores.",
+    name: "Beverage Barn",
+    description: "Beverages and drinks from local suppliers.",
     location: {
       latitude: 40.7614,
       longitude: -73.9776,
@@ -181,9 +181,9 @@ export const mockBusinesses: Business[] = [
     distance: 1.8,
     rating: 4.6,
     image:
-      "https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=300&h=200&fit=crop&auto=format",
+      "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=300&h=200&fit=crop&auto=format",
     heroImage:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=400&fit=crop&auto=format",
+      "https://images.unsplash.com/photo-1556909114-2c36e8d77b2f?w=800&h=400&fit=crop&auto=format",
     surpriseBags: [mockSurpriseBags[3]],
   },
 ];
@@ -210,8 +210,8 @@ export const mockOrders: Order[] = [
   {
     id: "3",
     businessId: "3",
-    businessName: "Fashion Finds",
-    items: ["Shirts", "Pants"],
+    businessName: "Deli Delights",
+    items: ["Ham", "Cheese"],
     total: 12.99,
     status: "ready",
     pickupTime: "2023-10-02T18:00:00Z",
@@ -234,14 +234,14 @@ export const mockLocalHauls = [
   {
     id: "1",
     image:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&auto=format",
-    description: "Mystery electronics bundle",
+      "https://images.unsplash.com/photo-1544025162-d76694265947?w=200&h=200&fit=crop&auto=format",
+    description: "Mystery deli bundle",
   },
   {
     id: "2",
     image:
-      "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=200&h=200&fit=crop&auto=format",
-    description: "Fashion treasures",
+      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=200&h=200&fit=crop&auto=format",
+    description: "Dairy treasures",
   },
   {
     id: "3",
@@ -258,13 +258,13 @@ export const mockLocalHauls = [
   {
     id: "5",
     image:
-      "https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=200&h=200&fit=crop&auto=format",
-    description: "Gadget collection",
+      "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=200&h=200&fit=crop&auto=format",
+    description: "Beverage collection",
   },
   {
     id: "6",
     image:
-      "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=200&h=200&fit=crop&auto=format",
-    description: "Style surprises",
+      "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=200&h=200&fit=crop&auto=format",
+    description: "Pantry surprises",
   },
 ];

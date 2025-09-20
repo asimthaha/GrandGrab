@@ -332,49 +332,48 @@ export default function DiscoverScreen() {
             <TouchableOpacity
               style={[
                 styles.filterChip,
-                selectedFilters.includes("clothing") &&
-                  styles.selectedFilterChip,
+                selectedFilters.includes("deli") && styles.selectedFilterChip,
               ]}
               onPress={() =>
                 setSelectedFilters((prev) =>
-                  prev.includes("clothing")
-                    ? prev.filter((f) => f !== "clothing")
-                    : [...prev, "clothing"]
+                  prev.includes("deli")
+                    ? prev.filter((f) => f !== "deli")
+                    : [...prev, "deli"]
                 )
               }
             >
               <Text
                 style={[
                   styles.filterChipText,
-                  selectedFilters.includes("clothing") &&
+                  selectedFilters.includes("deli") &&
                     styles.selectedFilterChipText,
                 ]}
               >
-                Clothing
+                Deli
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[
                 styles.filterChip,
-                selectedFilters.includes("electronics") &&
+                selectedFilters.includes("beverages") &&
                   styles.selectedFilterChip,
               ]}
               onPress={() =>
                 setSelectedFilters((prev) =>
-                  prev.includes("electronics")
-                    ? prev.filter((f) => f !== "electronics")
-                    : [...prev, "electronics"]
+                  prev.includes("beverages")
+                    ? prev.filter((f) => f !== "beverages")
+                    : [...prev, "beverages"]
                 )
               }
             >
               <Text
                 style={[
                   styles.filterChipText,
-                  selectedFilters.includes("electronics") &&
+                  selectedFilters.includes("beverages") &&
                     styles.selectedFilterChipText,
                 ]}
               >
-                Electronics
+                Beverages
               </Text>
             </TouchableOpacity>
           </ScrollView>
