@@ -19,10 +19,18 @@ const { width } = Dimensions.get("window");
 
 export default function StoreDetailScreen() {
   const { business: businessString } = useLocalSearchParams();
-  const business: Business = JSON.parse(businessString as string);
+
   const router = useRouter();
   const { addOrder, updateUserStats, user, showToast } = useAppContext();
   const [isReserving, setIsReserving] = React.useState(false);
+
+  let business: Business;
+  try {
+    business = JSON.parse(businessString as string);
+  } catch (error) {
+    console.error("StoreDetailScreen: failed to parse business:", error);
+    business = {} as Business; // fallback, but we should handle better
+  }
 
   const handleReserve = async (surpriseBag: SurpriseBag) => {
     setIsReserving(true);

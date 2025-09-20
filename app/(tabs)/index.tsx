@@ -16,14 +16,14 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Colors } from "../constants/Colors";
+import { Colors } from "../../constants/Colors";
 import {
   Business,
   mockBusinesses,
   mockLocalHauls,
-} from "../constants/MockData";
-import { Styles } from "../constants/Styles";
-import { useAppContext } from "../contexts/AppContext";
+} from "../../constants/MockData";
+import { Styles } from "../../constants/Styles";
+import { useAppContext } from "../../contexts/AppContext";
 
 export default function DiscoverScreen() {
   const router = useRouter();

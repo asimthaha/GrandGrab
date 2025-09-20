@@ -1,7 +1,6 @@
-import { SplashScreen } from "expo-router";
+import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import BottomTabNavigator from "./navigation/BottomTabNavigator";
 import { AppProvider, useAppContext } from "../contexts/AppContext";
 import Toast from "../components/Toast";
 
@@ -31,7 +30,10 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <AppProvider>
-        <BottomTabNavigator />
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="store-detail" />
+        </Stack>
         <ToastWrapper />
       </AppProvider>
     </GestureHandlerRootView>

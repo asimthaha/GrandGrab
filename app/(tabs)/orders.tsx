@@ -12,9 +12,9 @@ import {
   View,
 } from "react-native";
 import { SceneMap, TabBar, TabView } from "react-native-tab-view";
-import { Colors } from "../constants/Colors";
-import { Order } from "../constants/MockData";
-import { useAppContext } from "../contexts/AppContext";
+import { Colors } from "../../constants/Colors";
+import { Order } from "../../constants/MockData";
+import { useAppContext } from "../../contexts/AppContext";
 
 const CountdownTimer = ({ pickupTime }: { pickupTime: string }) => {
   const [timeLeft, setTimeLeft] = useState<string>("");

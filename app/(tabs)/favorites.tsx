@@ -7,9 +7,9 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Colors } from "../constants/Colors";
-import { Business, mockBusinesses } from "../constants/MockData";
-import { useAppContext } from "../contexts/AppContext";
+import { Colors } from "../../constants/Colors";
+import { Business, mockBusinesses } from "../../constants/MockData";
+import { useAppContext } from "../../contexts/AppContext";
 
 export default function FavoritesScreen() {
   const { favorites } = useAppContext();

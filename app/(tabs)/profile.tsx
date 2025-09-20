@@ -9,8 +9,8 @@ import {
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
-import { Colors } from "../constants/Colors";
-import { mockUser } from "../constants/MockData";
+import { Colors } from "../../constants/Colors";
+import { mockUser } from "../../constants/MockData";
 
 export default function ProfileScreen() {
   const [animatedValues] = useState({
