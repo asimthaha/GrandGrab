@@ -5,15 +5,16 @@ import {
   Dimensions,
   FlatList,
   Modal,
+  PanResponder,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import { PanGestureHandler, State } from "react-native-gesture-handler";
 import { SceneMap, TabBar, TabView } from "react-native-tab-view";
 import { Colors } from "../constants/Colors";
-import { mockOrders, Order } from "../constants/MockData";
+import { Order } from "../constants/MockData";
+import { useAppContext } from "../contexts/AppContext";
 
 const CountdownTimer = ({ pickupTime }: { pickupTime: string }) => {
   const [timeLeft, setTimeLeft] = useState<string>("");
@@ -51,7 +52,8 @@ const CountdownTimer = ({ pickupTime }: { pickupTime: string }) => {
 };
 
 export default function OrdersScreen() {
-  const [orders, setOrders] = useState<Order[]>(mockOrders);
+  const { orders, user, updateOrder, updateUserStats, showToast } =
+    useAppContext();
   const [index, setIndex] = useState(0);
   const [routes] = useState([
     { key: "current", title: "Current Orders" },
@@ -59,6 +61,7 @@ export default function OrdersScreen() {
   ]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [isConfirming, setIsConfirming] = useState(false);
 
   const generatePickupCode = () => {
     return Math.random().toString(36).substr(2, 9).toUpperCase();
@@ -70,47 +73,72 @@ export default function OrdersScreen() {
     setModalVisible(true);
   };
 
-  const confirmRedeem = () => {
+  const confirmRedeem = async () => {
     if (selectedOrder) {
-      setOrders((prev) =>
-        prev.map((order) =>
-          order.id === selectedOrder.id
-            ? { ...selectedOrder, status: "picked_up" as const }
-            : order
-        )
-      );
-      setModalVisible(false);
-      setSelectedOrder(null);
+      setIsConfirming(true);
+
+      try {
+        // Simulate async operation
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
+        // Simulate random error (10% chance)
+        if (Math.random() < 0.1) {
+          throw new Error("Redemption failed");
+        }
+
+        updateOrder(selectedOrder.id, { status: "redeemed" as const });
+        updateUserStats({ itemsRedeemed: user.stats.itemsRedeemed + 1 });
+        showToast({
+          message: "Order Redeemed!",
+          type: "success",
+        });
+        setModalVisible(false);
+        setSelectedOrder(null);
+      } catch (error) {
+        showToast({
+          message: "Failed to redeem. Please try again.",
+          type: "error",
+        });
+      } finally {
+        setIsConfirming(false);
+      }
     }
   };
 
   const renderOrderCard = ({ item }: { item: Order }) => {
     const translateX = new Animated.Value(0);
+    const isExpired =
+      new Date(item.pickupTime).getTime() < new Date().getTime();
 
-    const onGestureEvent = Animated.event(
-      [{ nativeEvent: { translationX: translateX } }],
-      { useNativeDriver: false }
-    );
-
-    const onHandlerStateChange = (event: any) => {
-      if (event.nativeEvent.state === State.END) {
-        if (event.nativeEvent.translationX > 100 && item.status === "ready") {
+    const panResponder = PanResponder.create({
+      onMoveShouldSetPanResponder: (evt, gestureState) => {
+        return (
+          Math.abs(gestureState.dx) > Math.abs(gestureState.dy) &&
+          Math.abs(gestureState.dx) > 20
+        );
+      },
+      onPanResponderMove: Animated.event([null, { dx: translateX }], {
+        useNativeDriver: false,
+      }),
+      onPanResponderRelease: (evt, gestureState) => {
+        if (gestureState.dx > 100 && item.status === "ready" && !isExpired) {
           handleRedeem(item);
         }
         Animated.spring(translateX, {
           toValue: 0,
           useNativeDriver: false,
         }).start();
-      }
-    };
+      },
+    });
 
     return (
-      <PanGestureHandler
-        onGestureEvent={onGestureEvent}
-        onHandlerStateChange={onHandlerStateChange}
-      >
+      <View {...panResponder.panHandlers}>
         <Animated.View
-          style={[styles.orderCard, { transform: [{ translateX }] }]}
+          style={[
+            styles.orderCard,
+            item.status === "redeemed" && styles.redeemedCard,
+            { transform: [{ translateX }] },
+          ]}
         >
           <View style={styles.orderInfo}>
             <Text style={styles.businessName}>{item.businessName}</Text>
@@ -122,14 +150,17 @@ export default function OrdersScreen() {
             <Text style={styles.pickupTime}>
               Pickup: {new Date(item.pickupTime).toLocaleString()}
             </Text>
-            {item.status !== "picked_up" && (
+            {item.status !== "picked_up" && item.status !== "redeemed" && (
               <CountdownTimer pickupTime={item.pickupTime} />
             )}
-            {item.status === "ready" && (
+            {item.status === "ready" && !isExpired && (
               <Text style={styles.swipeHint}>Swipe right to redeem</Text>
             )}
+            {item.status === "ready" && isExpired && (
+              <Text style={styles.expiredHint}>Pickup window expired</Text>
+            )}
           </View>
-          {item.status === "ready" && (
+          {item.status === "ready" && !isExpired && (
             <View style={styles.redeemIndicator}>
               <Ionicons
                 name="checkmark-circle"
@@ -138,8 +169,17 @@ export default function OrdersScreen() {
               />
             </View>
           )}
+          {item.status === "redeemed" && (
+            <View style={styles.redeemedIndicator}>
+              <Ionicons
+                name="checkmark-done-circle"
+                size={30}
+                color={Colors.success}
+              />
+            </View>
+          )}
         </Animated.View>
-      </PanGestureHandler>
+      </View>
     );
   };
 
@@ -171,7 +211,7 @@ export default function OrdersScreen() {
 
   const HistoryScene = () => {
     const historyOrders = orders.filter(
-      (order) => order.status === "picked_up"
+      (order) => order.status === "picked_up" || order.status === "redeemed"
     );
     return (
       <View style={styles.scene}>
@@ -228,8 +268,11 @@ export default function OrdersScreen() {
             <TouchableOpacity
               style={styles.modalButton}
               onPress={confirmRedeem}
+              disabled={isConfirming}
             >
-              <Text style={styles.modalButtonText}>Confirm Redemption</Text>
+              <Text style={styles.modalButtonText}>
+                {isConfirming ? "Confirming..." : "Confirm Redemption"}
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.modalCancel}
@@ -311,6 +354,20 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 10,
+  },
+  redeemedCard: {
+    backgroundColor: Colors.success,
+  },
+  redeemedIndicator: {
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 10,
+  },
+  expiredHint: {
+    fontSize: 12,
+    color: Colors.accent,
+    fontStyle: "italic",
+    marginTop: 5,
   },
   emptyState: {
     flex: 1,

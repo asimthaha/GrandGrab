@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import React from "react";
 import {
   Dimensions,
@@ -13,17 +13,66 @@ import {
 } from "react-native";
 import { Colors } from "../constants/Colors";
 import { Business, SurpriseBag } from "../constants/MockData";
+import { useAppContext } from "../contexts/AppContext";
 
 const { width } = Dimensions.get("window");
 
 export default function StoreDetailScreen() {
   const { business: businessString } = useLocalSearchParams();
   const business: Business = JSON.parse(businessString as string);
+  const router = useRouter();
+  const { addOrder, updateUserStats, user, showToast } = useAppContext();
+  const [isReserving, setIsReserving] = React.useState(false);
 
-  const handleReserve = (surpriseBag: SurpriseBag) => {
-    // TODO: Implement reserve functionality
-    // Create new order, navigate to orders
-    console.log("Reserve", surpriseBag);
+  const handleReserve = async (surpriseBag: SurpriseBag) => {
+    setIsReserving(true);
+
+    try {
+      // Simulate async operation
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      // Simulate random error (10% chance)
+      if (Math.random() < 0.1) {
+        throw new Error("Network error");
+      }
+
+      // Create new order
+      const orderData = {
+        businessId: business.id,
+        businessName: business.name,
+        items: [surpriseBag.name],
+        total: surpriseBag.discountedPrice,
+        status: "reserved" as const,
+        pickupTime: surpriseBag.pickupWindow.start,
+      };
+
+      // Add the order
+      addOrder(orderData);
+
+      // Update user stats
+      const savings = surpriseBag.originalPrice - surpriseBag.discountedPrice;
+      updateUserStats({
+        totalSaved: user.stats.totalSaved + savings,
+        itemsRedeemed: user.stats.itemsRedeemed + 1,
+        businessesVisited: user.stats.businessesVisited + 1, // Assuming new visit
+      });
+
+      // Show success toast
+      showToast({
+        message: "Surprise Bag Reserved!",
+        type: "success",
+      });
+
+      // Navigate to orders screen
+      router.push("/orders");
+    } catch (error) {
+      showToast({
+        message: "Failed to reserve. Please try again.",
+        type: "error",
+      });
+    } finally {
+      setIsReserving(false);
+    }
   };
 
   const SurpriseBagCard = ({ bag }: { bag: SurpriseBag }) => (
@@ -110,9 +159,16 @@ export default function StoreDetailScreen() {
           <TouchableOpacity
             style={styles.reserveButton}
             onPress={() => handleReserve(business.surpriseBags[0])}
+            disabled={isReserving}
           >
-            <Ionicons name="bag-handle" size={24} color={Colors.secondary} />
-            <Text style={styles.reserveButtonText}>Reserve Surprise Bag</Text>
+            <Ionicons
+              name={isReserving ? "hourglass" : "bag-handle"}
+              size={24}
+              color={Colors.secondary}
+            />
+            <Text style={styles.reserveButtonText}>
+              {isReserving ? "Reserving..." : "Reserve Surprise Bag"}
+            </Text>
           </TouchableOpacity>
         </LinearGradient>
       )}

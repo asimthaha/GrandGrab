@@ -2,6 +2,23 @@ import { SplashScreen } from "expo-router";
 import { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import BottomTabNavigator from "./navigation/BottomTabNavigator";
+import { AppProvider, useAppContext } from "../contexts/AppContext";
+import Toast from "../components/Toast";
+
+// Toast wrapper component to use context
+function ToastWrapper() {
+  const { currentToast, dismissToast } = useAppContext();
+
+  return currentToast ? (
+    <Toast
+      message={currentToast.message}
+      type={currentToast.type}
+      duration={currentToast.duration}
+      visible={!!currentToast}
+      onDismiss={dismissToast}
+    />
+  ) : null;
+}
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -13,7 +30,10 @@ export default function RootLayout() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <BottomTabNavigator />
+      <AppProvider>
+        <BottomTabNavigator />
+        <ToastWrapper />
+      </AppProvider>
     </GestureHandlerRootView>
   );
 }

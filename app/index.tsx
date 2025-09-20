@@ -6,6 +6,7 @@ import { useRouter } from "expo-router";
 import React, { useEffect, useMemo, useState } from "react";
 import {
   Alert,
+  Animated,
   Dimensions,
   FlatList,
   Image,
@@ -23,6 +24,7 @@ import {
   mockLocalHauls,
 } from "../constants/MockData";
 import { Styles } from "../constants/Styles";
+import { useAppContext } from "../contexts/AppContext";
 
 const { width } = Dimensions.get("window");
 
@@ -31,6 +33,7 @@ export default function DiscoverScreen() {
   const [viewMode, setViewMode] = useState<"list" | "map">("list");
   const [searchQuery, setSearchQuery] = useState("");
   const [businesses, setBusinesses] = useState<Business[]>(mockBusinesses);
+  const { favorites, toggleFavorite } = useAppContext();
 
   useEffect(() => {
     (async () => {
@@ -98,26 +101,59 @@ export default function DiscoverScreen() {
     ];
   }, [businesses, viewMode]);
 
-  const renderBusinessCard = ({ item }: { item: Business }) => (
-    <TouchableOpacity
-      style={styles.businessCard}
-      onPress={() =>
-        router.push({
-          pathname: "/store-detail",
-          params: { business: JSON.stringify(item) },
-        })
-      }
-    >
-      <View style={styles.businessInfo}>
-        <Text style={styles.businessName}>{item.name}</Text>
-        <Text style={styles.businessDescription}>{item.description}</Text>
-        <Text style={styles.businessDistance}>{item.distance} miles away</Text>
-        <Text style={styles.businessRating}>⭐ {item.rating}</Text>
-      </View>
-      <TouchableOpacity style={styles.favoriteButton}>
-        <Ionicons name="heart-outline" size={24} color={Colors.primary} />
+  const BusinessCard = ({ item }: { item: Business }) => {
+    const scaleAnim = React.useRef(new Animated.Value(1)).current;
+
+    return (
+      <TouchableOpacity
+        style={styles.businessCard}
+        onPress={() =>
+          router.push({
+            pathname: "/store-detail",
+            params: { business: JSON.stringify(item) },
+          })
+        }
+      >
+        <View style={styles.businessInfo}>
+          <Text style={styles.businessName}>{item.name}</Text>
+          <Text style={styles.businessDescription}>{item.description}</Text>
+          <Text style={styles.businessDistance}>
+            {item.distance} miles away
+          </Text>
+          <Text style={styles.businessRating}>⭐ {item.rating}</Text>
+        </View>
+        <TouchableOpacity
+          style={styles.favoriteButton}
+          onPress={() => {
+            toggleFavorite(item.id);
+            Animated.sequence([
+              Animated.timing(scaleAnim, {
+                toValue: 1.3,
+                duration: 150,
+                useNativeDriver: true,
+              }),
+              Animated.timing(scaleAnim, {
+                toValue: 1,
+                duration: 150,
+                useNativeDriver: true,
+              }),
+            ]).start();
+          }}
+        >
+          <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
+            <Ionicons
+              name={favorites.includes(item.id) ? "heart" : "heart-outline"}
+              size={24}
+              color={Colors.primary}
+            />
+          </Animated.View>
+        </TouchableOpacity>
       </TouchableOpacity>
-    </TouchableOpacity>
+    );
+  };
+
+  const renderBusinessCard = ({ item }: { item: Business }) => (
+    <BusinessCard item={item} />
   );
 
   const renderLocalHaul = ({ item }: { item: any }) => (

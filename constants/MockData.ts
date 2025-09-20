@@ -35,7 +35,7 @@ export interface Order {
   businessName: string;
   items: string[];
   total: number;
-  status: "pending" | "ready" | "picked_up";
+  status: "pending" | "ready" | "picked_up" | "reserved" | "redeemed";
   pickupTime: string;
   pickupCode?: string;
 }
@@ -50,6 +50,12 @@ export interface User {
     itemsRedeemed: number;
     businessesVisited: number;
   };
+}
+
+export interface AppState {
+  user: User;
+  favorites: string[]; // array of business IDs
+  orders: Order[];
 }
 
 export const mockSurpriseBags: SurpriseBag[] = [

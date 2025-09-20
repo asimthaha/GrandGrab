@@ -1,17 +1,21 @@
+import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import {
+  FlatList,
   StyleSheet,
   Text,
-  View,
-  FlatList,
   TouchableOpacity,
+  View,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "../constants/Colors";
-import { mockBusinesses, Business } from "../constants/MockData";
+import { Business, mockBusinesses } from "../constants/MockData";
+import { useAppContext } from "../contexts/AppContext";
 
 export default function FavoritesScreen() {
-  const favoriteBusinesses = mockBusinesses.slice(0, 2); // Mock favorites
+  const { favorites } = useAppContext();
+  const favoriteBusinesses = mockBusinesses.filter((business) =>
+    favorites.includes(business.id)
+  );
 
   const renderBusinessCard = ({ item }: { item: Business }) => (
     <View style={styles.businessCard}>
