@@ -39,7 +39,7 @@ export default function ProfileScreen() {
   const interpolatedValues = {
     totalSaved: animatedValues.totalSaved.interpolate({
       inputRange: [0, mockUser.stats.totalSaved],
-      outputRange: ["0.00", mockUser.stats.totalSaved.toFixed(2)],
+      outputRange: ["$0.00", "$" + mockUser.stats.totalSaved.toFixed(2)],
     }),
     itemsRedeemed: animatedValues.itemsRedeemed.interpolate({
       inputRange: [0, mockUser.stats.itemsRedeemed],
@@ -72,7 +72,7 @@ export default function ProfileScreen() {
           <View style={styles.statInfo}>
             <Text style={styles.statLabel}>Money Saved</Text>
             <Animated.Text style={styles.statValue}>
-              ${interpolatedValues.totalSaved}
+              {interpolatedValues.totalSaved}
             </Animated.Text>
           </View>
         </View>
