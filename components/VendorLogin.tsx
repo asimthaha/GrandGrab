@@ -1,3 +1,5 @@
+import { Colors } from "@/constants/Colors";
+import { mockVendorProfiles, VendorProfile } from "@/constants/MockData";
 import React, { useState } from "react";
 import {
   Alert,
@@ -9,8 +11,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Colors } from "../../../constants/Colors";
-import { mockVendorProfiles, VendorProfile } from "../../../constants/MockData";
 
 interface VendorLoginProps {
   onLogin: (vendor: VendorProfile) => void;

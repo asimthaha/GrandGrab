@@ -2,9 +2,9 @@ import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import React, { useState } from "react";
 
+import VendorLogin from "../../components/VendorLogin";
 import { Colors } from "../../constants/Colors";
 import { VendorProfile } from "../../constants/MockData";
-import VendorLogin from "./components/VendorLogin";
 
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof Ionicons>["name"];
