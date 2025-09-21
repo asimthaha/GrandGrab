@@ -119,14 +119,6 @@ export default function DiscoverScreen() {
       { type: "sectionTitle", title: "Local Hauls" },
       ...localHaulRows,
     ];
-    console.log(
-      "Building combinedData, filtered businesses:",
-      filteredBusinesses.length,
-      "localHauls length:",
-      mockLocalHauls.length,
-      "total items:",
-      data.length
-    );
     return data;
   }, [businesses, viewMode, searchQuery, selectedFilters]);
 
@@ -143,6 +135,7 @@ export default function DiscoverScreen() {
           })
         }
       >
+        <Image source={{ uri: item.image }} style={styles.businessImage} />
         <View style={styles.businessInfo}>
           <Text style={styles.businessName}>{item.name}</Text>
           <Text style={styles.businessDescription}>{item.description}</Text>
@@ -186,21 +179,9 @@ export default function DiscoverScreen() {
   );
 
   const renderLocalHaul = ({ item }: { item: any }) => {
-    console.log(
-      "Rendering renderLocalHaul for item:",
-      item.id,
-      "image URI:",
-      item.image
-    );
     return (
       <View style={styles.localHaulItem}>
-        <Image
-          source={{ uri: item.image }}
-          style={styles.localHaulImage}
-          onError={(e) =>
-            console.log("Image failed to load for haul:", item.id, "error:", e)
-          }
-        />
+        <Image source={{ uri: item.image }} style={styles.localHaulImage} />
       </View>
     );
   };
@@ -209,15 +190,8 @@ export default function DiscoverScreen() {
     if (item.type === "business") {
       return renderBusinessCard({ item: item.data });
     } else if (item.type === "sectionTitle") {
-      console.log("Rendering sectionTitle:", item.title);
       return <Text style={styles.sectionTitle}>{item.title}</Text>;
     } else if (item.type === "localHaulRow") {
-      console.log(
-        "Rendering localHaulRow with data length:",
-        item.data.length,
-        "data:",
-        item.data
-      );
       return (
         <View style={styles.localHaulRow}>
           {item.data.map((haul: any) => (
@@ -556,6 +530,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
+    alignItems: "center",
+  },
+  businessImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 8,
+    marginRight: 16,
+    resizeMode: "cover",
   },
   businessInfo: {
     flex: 1,

@@ -71,7 +71,8 @@ export const mockSurpriseBags: SurpriseBag[] = [
       end: "2023-10-01T19:00:00Z",
     },
     availableQuantity: 5,
-    image: "https://example.com/bakery-bag.jpg",
+    image:
+      "https://images.unsplash.com/photo-1556909114-2c36e8d77b2f?w=200&h=200&fit=crop&auto=format",
   },
   {
     id: "bag2",
@@ -85,7 +86,8 @@ export const mockSurpriseBags: SurpriseBag[] = [
       end: "2023-10-01T20:00:00Z",
     },
     availableQuantity: 3,
-    image: "https://example.com/grocery-bag.jpg",
+    image:
+      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=200&h=200&fit=crop&auto=format",
   },
   {
     id: "bag3",
@@ -99,7 +101,8 @@ export const mockSurpriseBags: SurpriseBag[] = [
       end: "2023-10-01T18:00:00Z",
     },
     availableQuantity: 4,
-    image: "https://example.com/deli-bag.jpg",
+    image:
+      "https://images.unsplash.com/photo-1544025162-d76694265947?w=200&h=200&fit=crop&auto=format",
   },
   {
     id: "bag4",
@@ -113,7 +116,8 @@ export const mockSurpriseBags: SurpriseBag[] = [
       end: "2023-10-01T19:00:00Z",
     },
     availableQuantity: 2,
-    image: "https://example.com/beverage-bag.jpg",
+    image:
+      "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=200&h=200&fit=crop&auto=format",
   },
 ];
 
@@ -130,7 +134,7 @@ export const mockBusinesses: Business[] = [
     distance: 0.5,
     rating: 4.5,
     image:
-      "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=300&h=200&fit=crop&auto=format",
+      "https://images.unsplash.com/photo-1556909114-2c36e8d77b2f?w=300&h=200&fit=crop&auto=format",
     heroImage:
       "https://images.unsplash.com/photo-1556909114-3c36e8d77b2f?w=800&h=400&fit=crop&auto=format",
     surpriseBags: [mockSurpriseBags[0]],
@@ -149,7 +153,7 @@ export const mockBusinesses: Business[] = [
     image:
       "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=300&h=200&fit=crop&auto=format",
     heroImage:
-      "https://images.unsplash.com/photo-1556909114-3c36e8d77b2f?w=800&h=400&fit=crop&auto=format",
+      "https://images.unsplash.com/photo-1578916171728-46686eac8d58?w=800&h=400&fit=crop&auto=format",
     surpriseBags: [mockSurpriseBags[1]],
   },
   {
@@ -166,7 +170,7 @@ export const mockBusinesses: Business[] = [
     image:
       "https://images.unsplash.com/photo-1544025162-d76694265947?w=300&h=200&fit=crop&auto=format",
     heroImage:
-      "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800&h=400&fit=crop&auto=format",
+      "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&h=400&fit=crop&auto=format",
     surpriseBags: [mockSurpriseBags[2]],
   },
   {
@@ -196,7 +200,7 @@ export const mockOrders: Order[] = [
     items: ["Bread Loaf", "Croissants"],
     total: 5.99,
     status: "ready",
-    pickupTime: "2023-10-01T18:00:00Z",
+    pickupTime: "2025-09-21T18:00:00Z",
   },
   {
     id: "2",
@@ -205,7 +209,7 @@ export const mockOrders: Order[] = [
     items: ["Bananas", "Milk"],
     total: 8.99,
     status: "pending",
-    pickupTime: "2023-10-02T17:00:00Z",
+    pickupTime: "2025-09-22T17:00:00Z",
   },
   {
     id: "3",
@@ -214,7 +218,7 @@ export const mockOrders: Order[] = [
     items: ["Ham", "Cheese"],
     total: 12.99,
     status: "ready",
-    pickupTime: "2023-10-02T18:00:00Z",
+    pickupTime: "2025-09-22T18:00:00Z",
   },
 ];
 

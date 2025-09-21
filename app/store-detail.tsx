@@ -147,6 +147,11 @@ export default function StoreDetailScreen() {
           </View>
 
           <Text style={styles.businessDescription}>{business.description}</Text>
+
+          {/* Store Photo */}
+          <View style={styles.storePhotoContainer}>
+            <Image source={{ uri: business.image }} style={styles.storePhoto} />
+          </View>
         </View>
 
         {/* Surprise Bags */}
@@ -246,6 +251,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: Colors.light.text,
     lineHeight: 24,
+    marginBottom: 15,
+  },
+  storePhotoContainer: {
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  storePhoto: {
+    width: 120,
+    height: 80,
+    borderRadius: 8,
+    resizeMode: "cover",
   },
   surpriseBagsSection: {
     padding: 20,

@@ -9,6 +9,15 @@
       "android": {
         "resourceClass": "medium"
       }
+    },
+    "production": {
+      "ios": {
+        "resourceClass": "m-medium"
+      },
+      "android": {
+        "buildType": "apk",
+        "resourceClass": "medium"
+      }
     }
   }
 }
