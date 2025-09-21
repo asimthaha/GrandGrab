@@ -58,6 +58,53 @@ export interface AppState {
   orders: Order[];
 }
 
+export interface VendorProfile {
+  id: string;
+  businessId: string;
+  username: string;
+  password: string;
+  businessName: string;
+  ownerName: string;
+  email: string;
+  phone: string;
+  joinDate: string;
+  subscription: "free" | "premium";
+  settings: {
+    notifications: boolean;
+    autoConfirm: boolean;
+    closedDays: string[];
+  };
+}
+
+export interface VendorAnalytics {
+  businessId: string;
+  thisWeek: {
+    bagsCreated: number;
+    bagsSold: number;
+    revenue: number;
+    wasteReduced: number;
+    customers: number;
+  };
+  thisMonth: {
+    bagsCreated: number;
+    bagsSold: number;
+    revenue: number;
+    wasteReduced: number;
+    customers: number;
+  };
+  peakHours: Array<{ hour: string; orders: number }>;
+  topCustomers: Array<{ name: string; orders: number; value: number }>;
+}
+
+export interface VendorOrder extends Order {
+  customerName: string;
+  customerPhone: string;
+  pickupCode: string;
+  specialRequests?: string;
+  customerArrived: boolean;
+  verificationRequired: boolean;
+}
+
 export const mockSurpriseBags: SurpriseBag[] = [
   {
     id: "bag1",
@@ -270,5 +317,179 @@ export const mockLocalHauls = [
     image:
       "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=200&h=200&fit=crop&auto=format",
     description: "Pantry surprises",
+  },
+];
+
+export const mockVendorProfiles: VendorProfile[] = [
+  {
+    id: "1",
+    businessId: "1",
+    username: "goldencrust",
+    password: "baker123",
+    businessName: "Golden Crust Bakery",
+    ownerName: "Maria Rodriguez",
+    email: "maria@goldencrust.com",
+    phone: "+1-555-0123",
+    joinDate: "2023-03-15",
+    subscription: "premium",
+    settings: {
+      notifications: true,
+      autoConfirm: false,
+      closedDays: ["Sunday"],
+    },
+  },
+  {
+    id: "2",
+    businessId: "2",
+    username: "freshmarket",
+    password: "fresh456",
+    businessName: "Fresh Market Co.",
+    ownerName: "David Chen",
+    email: "david@freshmarket.com",
+    phone: "+1-555-0456",
+    joinDate: "2023-04-20",
+    subscription: "free",
+    settings: {
+      notifications: true,
+      autoConfirm: true,
+      closedDays: ["Monday"],
+    },
+  },
+  {
+    id: "3",
+    businessId: "3",
+    username: "bellas",
+    password: "italian789",
+    businessName: "Bella's Italian Kitchen",
+    ownerName: "Giuseppe Romano",
+    email: "giuseppe@bellaskitchen.com",
+    phone: "+1-555-0789",
+    joinDate: "2023-02-10",
+    subscription: "premium",
+    settings: {
+      notifications: false,
+      autoConfirm: false,
+      closedDays: ["Tuesday"],
+    },
+  },
+  {
+    id: "4",
+    businessId: "4",
+    username: "morningbrew",
+    password: "coffee000",
+    businessName: "Morning Brew Cafe",
+    ownerName: "Sarah Johnson",
+    email: "sarah@morningbrew.com",
+    phone: "+1-555-0000",
+    joinDate: "2023-05-01",
+    subscription: "free",
+    settings: {
+      notifications: true,
+      autoConfirm: true,
+      closedDays: ["Wednesday"],
+    },
+  },
+];
+
+export const mockVendorAnalytics: VendorAnalytics[] = [
+  {
+    businessId: "1",
+    thisWeek: {
+      bagsCreated: 25,
+      bagsSold: 20,
+      revenue: 150.0,
+      wasteReduced: 45,
+      customers: 18,
+    },
+    thisMonth: {
+      bagsCreated: 95,
+      bagsSold: 82,
+      revenue: 615.0,
+      wasteReduced: 180,
+      customers: 75,
+    },
+    peakHours: [
+      { hour: "17:00", orders: 8 },
+      { hour: "18:00", orders: 12 },
+      { hour: "19:00", orders: 6 },
+    ],
+    topCustomers: [
+      { name: "Alice Smith", orders: 5, value: 37.5 },
+      { name: "Bob Johnson", orders: 4, value: 30.0 },
+      { name: "Charlie Brown", orders: 3, value: 22.5 },
+    ],
+  },
+  {
+    businessId: "2",
+    thisWeek: {
+      bagsCreated: 18,
+      bagsSold: 15,
+      revenue: 195.0,
+      wasteReduced: 35,
+      customers: 14,
+    },
+    thisMonth: {
+      bagsCreated: 72,
+      bagsSold: 68,
+      revenue: 884.0,
+      wasteReduced: 140,
+      customers: 62,
+    },
+    peakHours: [
+      { hour: "16:00", orders: 6 },
+      { hour: "17:00", orders: 9 },
+      { hour: "18:00", orders: 7 },
+    ],
+    topCustomers: [
+      { name: "Diana Wilson", orders: 4, value: 52.0 },
+      { name: "Edward Davis", orders: 3, value: 39.0 },
+      { name: "Fiona Garcia", orders: 3, value: 39.0 },
+    ],
+  },
+];
+
+export const mockVendorOrders: VendorOrder[] = [
+  {
+    id: "1",
+    businessId: "1",
+    businessName: "Golden Crust Bakery",
+    items: ["Bread Loaf", "Croissants"],
+    total: 5.99,
+    status: "ready",
+    pickupTime: "2025-09-21T18:00:00Z",
+    customerName: "Alice Smith",
+    customerPhone: "+1-555-1111",
+    pickupCode: "ABC123",
+    customerArrived: false,
+    verificationRequired: true,
+  },
+  {
+    id: "2",
+    businessId: "2",
+    businessName: "Fresh Market Co.",
+    items: ["Bananas", "Milk"],
+    total: 8.99,
+    status: "pending",
+    pickupTime: "2025-09-22T17:00:00Z",
+    customerName: "Bob Johnson",
+    customerPhone: "+1-555-2222",
+    pickupCode: "DEF456",
+    customerArrived: false,
+    verificationRequired: false,
+  },
+  {
+    id: "3",
+    businessId: "3",
+    businessName: "Bella's Italian Kitchen",
+    items: ["Ham", "Cheese"],
+    total: 12.99,
+    status: "ready",
+    pickupTime: "2025-09-22T18:00:00Z",
+    customerName: "Charlie Brown",
+    customerPhone: "+1-555-3333",
+    pickupCode: "GHI789",
+    specialRequests: "No spicy items please",
+    customerArrived: true,
+    verificationRequired: true,
   },
 ];

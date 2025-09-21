@@ -31,8 +31,8 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <AppProvider>
         <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="(tabs)" />
           <Stack.Screen name="store-detail" />
+          <Stack.Screen name="vendor" />
         </Stack>
         <ToastWrapper />
       </AppProvider>

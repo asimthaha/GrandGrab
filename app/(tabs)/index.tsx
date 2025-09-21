@@ -213,7 +213,15 @@ export default function DiscoverScreen() {
         style={styles.header}
       >
         <View style={styles.headerContent}>
-          <Text style={styles.headerTitle}>Discover Treasure</Text>
+          <View style={styles.headerTopRow}>
+            <Text style={styles.headerTitle}>Discover Treasure</Text>
+            <TouchableOpacity
+              style={styles.vendorButton}
+              onPress={() => router.push("/vendor")}
+            >
+              <Text style={styles.vendorButtonText}>Vendor Portal</Text>
+            </TouchableOpacity>
+          </View>
           <View style={styles.locationSelector}>
             <Ionicons name="location" size={20} color={Colors.secondary} />
             <Text style={styles.locationText}>Current Location</Text>
@@ -433,12 +441,28 @@ const styles = StyleSheet.create({
   headerContent: {
     paddingHorizontal: 20,
   },
+  headerTopRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 20,
+  },
   headerTitle: {
     fontSize: 32,
     fontWeight: "bold",
     color: Colors.secondary,
     textAlign: "center",
-    marginBottom: 20,
+  },
+  vendorButton: {
+    backgroundColor: Colors.accent,
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+    borderRadius: 20,
+  },
+  vendorButtonText: {
+    color: Colors.secondary,
+    fontSize: 14,
+    fontWeight: "600",
   },
   locationSelector: {
     flexDirection: "row",

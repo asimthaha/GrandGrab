@@ -19,4 +19,10 @@ export const Colors = {
     tabIconDefault: "#9BA1A6",
     tabIconSelected: "#0A1F44", // Updated to primary/navy
   },
+  // Additional colors for vendor portal
+  text: "#11181C",
+  textSecondary: "#687076",
+  background: "#FFFFFF",
+  card: "#F8F9FA",
+  border: "#E9ECEF",
 };

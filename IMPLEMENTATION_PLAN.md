@@ -1,268 +1,55 @@
-# Surprise Bag App - Implementation Plan
+# Vendor Portal Implementation Plan
 
-## Overview
+This document outlines the plan to build the vendor-side interface for the Surprise Bag app, based on the requirements in `vendor-prompt.md`.
 
-This plan addresses the missing features identified in the codebase audit against the original prompt. The app is 70% complete with core screens and functionality, but critical components like Store Detail Screen and enhanced animations are missing.
+## 1. Project Setup & Architecture
 
-## Priority Matrix
+- **File Structure**: Create a new directory `app/vendor` to house all vendor-related components and screens.
+- **Navigation**: Implement a state-based navigation system within the vendor portal. A new router will be created at `app/(vendor)/_layout.tsx` to handle the vendor section.
+- **Authentication**: A mock authentication service will be created in `app/vendor/services/auth.ts` to handle login and session management.
+- **Mock Data**: All mock data and interfaces will be centralized in `constants/MockData.ts`.
+- **Styling**: We will continue to use the existing styling conventions from `constants/Styles.ts` and `constants/Colors.ts`, extending them for the vendor portal's theme.
 
-- **Critical**: Blocks core user flows
-- **High**: Important for user experience
-- **Medium**: Enhances polish
-- **Low**: Nice-to-have improvements
+## 2. Component Development Strategy
 
-## Phase 1: Critical Missing Components
+The development will be broken down into the following components, built in order:
 
-### 1.1 Store Detail Screen (Critical)
+### Phase 1: Core Infrastructure
 
-**File**: `app/store-detail.tsx`
-**Status**: Missing
-**Dependencies**: Navigation, MockData updates
+1.  **`VendorContainer` (`app/vendor/index.tsx`)**: This will be the main entry point for the vendor portal. It will manage the overall state, such as the current vendor's session and the current view (e.g., 'dashboard', 'orders'). It will conditionally render the `VendorLogin` screen or the main vendor dashboard layout.
+2.  **`VendorLogin` (`app/vendor/components/VendorLogin.tsx`)**: A component for the vendor login screen. It will include a form for username and password, display demo accounts, and handle the mock authentication flow with loading and error states.
+3.  **`VendorNavigation` (`app/vendor/components/VendorNavigation.tsx`)**: A sidebar navigation component for desktop and a collapsible hamburger menu for mobile. It will display navigation links and show notifications.
 
-**Requirements**:
+### Phase 2: Main Feature Screens
 
-- Hero image (full-width business photo)
-- Business info section (name, rating, address, icon)
-- Surprise Bag Card (price, discount, pickup window, available quantity)
-- Fixed Reserve Button (prominent, treasure-themed gradient)
+4.  **`VendorDashboard` (`app/vendor/components/VendorDashboard.tsx`)**: The main dashboard screen, showing key metrics, recent orders, and quick actions.
+5.  **`VendorBagManagement` (`app/vendor/components/VendorBagManagement.tsx`)**: A component for creating, updating, and managing surprise bags.
+6.  **`VendorOrders` (`app/vendor/components/VendorOrders.tsx`)**: A screen to view and manage customer orders, including a pickup verification system.
+7.  **`VendorAnalytics` (`app/vendor/components/VendorAnalytics.tsx`)**: A component to display business performance metrics and charts.
+8.  **`VendorProfile` (`app/vendor/components/VendorProfile.tsx`)**: A screen for vendors to manage their business profile and settings.
 
-**Implementation Steps**:
+## 3. State Management
 
-1. Create `app/store-detail.tsx` component
-2. Add route in navigation for store details
-3. Update Business interface to include hero image and surprise bag data
-4. Implement Reserve functionality that creates new Order
-5. Add navigation from Discover business cards to Store Detail
+- **Vendor Session**: The logged-in vendor's data will be managed using `useState` and `useContext` within the main `VendorContainer` component.
+- **Local Component State**: Individual components will manage their own UI state (e.g., form inputs, loading states) using `useState`.
+- **Toast Notifications**: A global `ToastContext` will be used to display notifications for actions like successful updates or errors.
 
-**Estimated Time**: 4-6 hours
+## 4. Mock API and Services
 
-### 1.2 Actual Map View (Critical)
+- A `simulateApiCall` function will be created in `app/vendor/services/api.ts` to mimic network latency for a realistic user experience.
+- Service functions will be created to handle fetching and updating mock data (e.g., `getVendorOrders`, `updateBagInventory`).
 
-**File**: `app/index.tsx` (replace placeholder)
-**Status**: Placeholder
-**Dependencies**: expo-maps or react-native-maps
+## 5. Key User Flows Implementation
 
-**Requirements**:
+- **Daily Workflow**: The flow from login to dashboard, checking orders, creating bags, and verifying pickups will be implemented as the core application experience.
+- **Customer Pickup**: The order status system (`Pending` -> `Customer Arrived` -> `Verified` -> `Completed`) will be managed within the `VendorOrders` component.
+- **Bag Creation**: The form and preview logic will be contained within the `VendorBagManagement` component.
 
-- Display business locations on map
-- User location marker
-- Business markers with info windows
-- Seamless switch between list and map views
+## 6. Timeline & Milestones
 
-**Implementation Steps**:
+1.  **Week 1**: Setup project structure, implement core authentication, and build the `VendorLogin` and `VendorNavigation` components.
+2.  **Week 2**: Develop the `VendorDashboard` and `VendorBagManagement` components.
+3.  **Week 3**: Build the `VendorOrders` and `VendorAnalytics` components.
+4.  **Week 4**: Complete the `VendorProfile` component, refine the UI/UX, and perform final testing.
 
-1. Install and configure react-native-maps
-2. Replace map placeholder with MapView component
-3. Add markers for businesses
-4. Implement marker clustering for performance
-5. Add callouts/info windows for business details
-
-**Estimated Time**: 6-8 hours
-
-## Phase 2: Core Functionality Enhancements
-
-### 2.1 Favorites Toggle Logic (High)
-
-**Files**: `app/index.tsx`, `app/favorites.tsx`, `constants/MockData.ts`
-**Status**: Mocked data only
-**Dependencies**: State management, persistence
-
-**Requirements**:
-
-- Toggle favorite status on heart press
-- Heart pulse animation
-- Persist favorites (AsyncStorage)
-- Update Favorites screen dynamically
-
-**Implementation Steps**:
-
-1. Add favorite state to Business interface
-2. Implement toggle logic in business cards
-3. Add pulse animation to heart icon
-4. Implement AsyncStorage for persistence
-5. Update Favorites screen to use real data
-
-**Estimated Time**: 3-4 hours
-
-### 2.2 Reserve/Order Creation Flow (High)
-
-**Files**: `app/store-detail.tsx`, `app/orders.tsx`, `constants/MockData.ts`
-**Status**: Orders are static
-**Dependencies**: Store Detail Screen, Navigation
-
-**Requirements**:
-
-- Reserve button creates new order
-- Order appears in Current Orders tab
-- Generates pickup code and time
-- Updates user stats
-
-**Implementation Steps**:
-
-1. Implement reserve button onPress handler
-2. Create new Order object with business data
-3. Add order to mockOrders array
-4. Navigate to Orders screen
-5. Update Profile stats (items redeemed, total saved)
-
-**Estimated Time**: 2-3 hours
-
-## Phase 3: Animation & Polish
-
-### 3.1 Enhanced Animations (Medium)
-
-**Files**: Multiple components
-**Status**: Basic animations present
-**Dependencies**: Animated API
-
-**Requirements**:
-
-- Treasure glow effect on key interactive elements
-- Heart pulse animation for favorites
-- Smooth screen transitions
-- Loading animations
-
-**Implementation Steps**:
-
-1. Create reusable glow animation component
-2. Implement pulse animation for heart buttons
-3. Add transition animations for navigation
-4. Add loading states with shimmer effects
-
-**Estimated Time**: 4-5 hours
-
-### 3.2 Search and Filter Logic (Medium)
-
-**File**: `app/index.tsx`
-**Status**: UI only
-**Dependencies**: Business data
-
-**Requirements**:
-
-- Functional search by business name/description
-- Filter by category, distance, rating
-- Real-time results
-
-**Implementation Steps**:
-
-1. Implement search filtering logic
-2. Add category filtering
-3. Add distance/rating sort options
-4. Debounce search input for performance
-
-**Estimated Time**: 2-3 hours
-
-## Phase 4: Data & Settings
-
-### 4.1 Enhanced Mock Data (Medium)
-
-**File**: `constants/MockData.ts`
-**Status**: Basic data
-**Dependencies**: All screens
-
-**Requirements**:
-
-- More comprehensive business data
-- Surprise bag items for each business
-- More diverse local hauls
-- Realistic order history
-
-**Implementation Steps**:
-
-1. Add hero images to businesses
-2. Create SurpriseBag interface
-3. Add surprise bags to each business
-4. Expand mock orders and local hauls
-
-**Estimated Time**: 1-2 hours
-
-### 4.2 Settings Functionality (Low)
-
-**File**: `app/profile.tsx`
-**Status**: UI only
-**Dependencies**: AsyncStorage, state management
-
-**Requirements**:
-
-- Functional notification toggles
-- Theme selection
-- Language selection
-- Data persistence
-
-**Implementation Steps**:
-
-1. Implement toggle switches for notifications
-2. Add theme switching logic
-3. Add language selection
-4. Persist settings using AsyncStorage
-
-**Estimated Time**: 3-4 hours
-
-## Phase 5: Testing & Optimization
-
-### 5.1 Integration Testing (Medium)
-
-**Files**: All
-**Status**: Manual testing only
-**Dependencies**: Jest, React Native Testing Library
-
-**Requirements**:
-
-- Unit tests for components
-- Integration tests for user flows
-- Navigation testing
-
-**Implementation Steps**:
-
-1. Set up testing framework
-2. Write unit tests for utilities
-3. Test navigation flows
-4. Test state management
-
-**Estimated Time**: 4-6 hours
-
-### 5.2 Performance Optimization (Medium)
-
-**Files**: All
-**Status**: Basic implementation
-**Dependencies**: React optimization
-
-**Requirements**:
-
-- Optimize FlatList rendering
-- Implement virtualization
-- Reduce bundle size
-
-**Implementation Steps**:
-
-1. Add React.memo to components
-2. Implement FlatList optimizations
-3. Lazy load screens
-4. Optimize images and assets
-
-**Estimated Time**: 2-3 hours
-
-## Implementation Order Recommendation
-
-1. **Phase 1**: Store Detail Screen & Map View (Critical user flows)
-2. **Phase 2**: Favorites & Reserve Flow (Complete booking cycle)
-3. **Phase 3**: Animations & Search (Polish and usability)
-4. **Phase 4**: Data & Settings (Completeness)
-5. **Phase 5**: Testing & Optimization (Quality assurance)
-
-## Estimated Total Time: 32-48 hours
-
-## Success Metrics
-
-- All original prompt requirements implemented
-- Seamless user flow from discovery to purchase
-- Polished animations and interactions
-- Comprehensive test coverage
-- Performance optimized for mobile
-
-## Risks & Mitigations
-
-- **Map Integration**: Test on physical devices
-- **State Management**: Implement proper global state if needed
-- **Performance**: Monitor and optimize as you build
-- **Dependencies**: Keep Expo SDK versions compatible
+This plan provides a clear roadmap for developing a comprehensive and functional MVP for the vendor portal.
